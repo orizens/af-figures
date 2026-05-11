@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { useSearch } from "@tanstack/react-router";
 import type { ReviewGroup } from "@/features/reviews/utils/dateGroups";
 import { groupReviewsByDate } from "@/features/reviews/utils/dateGroups";
@@ -20,44 +20,37 @@ export interface UseReviewsResult {
 }
 
 export function useReviews(): UseReviewsResult {
-	const { q, rating, page: urlPage } = useSearch({ from: "/" });
+	const { q, rating, page: urlPage, start, end } = useSearch({ from: "/" });
 
-	const query = useInfiniteQuery<ReviewsResponse, Error>({
-		queryKey: ["reviews", { q, rating }],
-		queryFn: async ({ pageParam, signal }) => {
-			const currentPage = pageParam as number;
-
-			// Page restoration: on the initial fetch (pageParam=1), if the URL has
-			// page>1, request all accumulated reviews in a single network call.
-			const isRestoringPages = currentPage === 1 && urlPage > 1;
-			const count = isRestoringPages ? urlPage * PAGE_SIZE : PAGE_SIZE;
-			const page = isRestoringPages ? 1 : currentPage;
-
-			return getReviews({ q, rating, page, count }, signal);
-		},
-		initialPageParam: 1,
-		getNextPageParam: (lastPage) => {
-			const totalPages = Math.ceil(lastPage.total / PAGE_SIZE);
-			const nextPage = lastPage.this_page + 1;
-			return nextPage <= totalPages ? nextPage : undefined;
-		},
-		placeholderData: (prev) => prev,
+	const queries = useQueries({
+		queries: Array.from({ length: urlPage }, (_, i) => ({
+			queryKey: ["reviews", { q, rating, page: i + 1, start, end }],
+			queryFn: ({ signal }: { signal: AbortSignal }) =>
+				getReviews({ q, rating, page: i + 1, count: PAGE_SIZE, start, end }, signal),
+			placeholderData: (prev: ReviewsResponse | undefined) => prev,
+		})),
 	});
 
-	const allReviews = query.data?.pages.flatMap((p) => p.reviews) ?? [];
-	const totalReviews = query.data?.pages[0]?.total ?? 0;
-	const pagesLoaded = query.data?.pages.at(-1)?.this_page ?? 0;
+	const allReviews = queries.flatMap((q) => q.data?.reviews ?? []);
+	const totalReviews = queries[0]?.data?.total ?? 0;
+	const pagesLoaded = queries.filter((q) => !!q.data).length;
+	const isFetching = queries.some((q) => q.isFetching);
+	const isFetchingNextPage = queries.at(-1)?.isFetching ?? false;
+	const isError = queries.some((q) => q.isError);
+	const error = queries.find((q) => q.isError)?.error ?? null;
+	const totalPages = totalReviews > 0 ? Math.ceil(totalReviews / PAGE_SIZE) : 0;
+	const hasNextPage = urlPage < totalPages;
 	const groups = groupReviewsByDate(allReviews);
 
 	return {
 		groups,
 		totalReviews,
 		pagesLoaded,
-		isFetching: query.isFetching,
-		isFetchingNextPage: query.isFetchingNextPage,
-		isError: query.isError,
-		error: query.error,
-		hasNextPage: query.hasNextPage,
-		fetchNextPage: query.fetchNextPage,
+		isFetching,
+		isFetchingNextPage,
+		isError,
+		error,
+		hasNextPage,
+		fetchNextPage: () => {},
 	};
 }

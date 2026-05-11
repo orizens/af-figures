@@ -16,11 +16,19 @@ const ratingSchema = z
 	.optional()
 	.catch(undefined);
 
+const dateSchema = z
+	.string()
+	.regex(/^\d{4}-\d{2}-\d{2}$/)
+	.optional()
+	.catch(undefined);
+
 export const Route = createFileRoute("/")({
 	validateSearch: z.object({
 		q: z.string().default("").catch(""),
 		rating: ratingSchema,
 		page: z.coerce.number().int().min(1).default(1).catch(1),
+		start: dateSchema,
+		end: dateSchema,
 	}),
 	component: ReviewsPage,
 });

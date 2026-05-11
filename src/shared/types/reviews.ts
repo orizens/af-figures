@@ -34,4 +34,8 @@ export interface ReviewSearchParams {
 	q: string;
 	rating: number[] | undefined;
 	page: number;
+	/** yyyy-mm-dd — only reviews created on or after this date */
+	start?: string;
+	/** yyyy-mm-dd — only reviews created on or before this date */
+	end?: string;
 }

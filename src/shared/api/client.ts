@@ -1,4 +1,4 @@
-const BASE_URL = "https://appfigures.com/_u/careers/api";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export async function fetchApi<T>(
 	path: string,
@@ -7,11 +7,9 @@ export async function fetchApi<T>(
 ): Promise<T> {
 	const url = new URL(`${BASE_URL}${path}`);
 
-	if (params) {
-		for (const [key, value] of Object.entries(params)) {
-			url.searchParams.set(key, value);
-		}
-	}
+	Object.entries(params ?? {}).forEach(([key, value]) =>
+		url.searchParams.set(key, value),
+	);
 
 	const response = await fetch(url.toString(), { signal });
 

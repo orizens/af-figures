@@ -24,5 +24,13 @@ export function getReviews(
 		queryParams["rating"] = params.rating.join(",");
 	}
 
+	if (params.start) {
+		queryParams["start"] = params.start;
+	}
+
+	if (params.end) {
+		queryParams["end"] = params.end;
+	}
+
 	return fetchApi<ReviewsResponse>("/reviews", queryParams, signal);
 }
