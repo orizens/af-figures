@@ -19,6 +19,7 @@ export interface Review {
 	store: string;
 	weight: number;
 	predicted_langs: string[];
+	tags: string[];
 }
 
 export interface ReviewsResponse {

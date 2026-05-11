@@ -123,6 +123,27 @@ function Body({ text }: BodyProps): React.ReactElement {
 	);
 }
 
+interface TagsProps {
+	tags: string[];
+	id: string;
+}
+
+function Tags({ tags, id }: TagsProps): React.ReactElement | null {
+	if (!tags || tags.length === 0) return null;
+	return (
+		<ul className="flex flex-wrap gap-1.5" aria-label="Tags">
+			{tags.map((tag, index) => (
+				<li
+					key={`tag-${id}-${index}`}
+					className="text-xs font-medium px-2 py-0.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20"
+				>
+					{tag}
+				</li>
+			))}
+		</ul>
+	);
+}
+
 interface FooterProps {
 	store: string;
 	version: string | null;
@@ -184,6 +205,7 @@ export function ReviewCard({ review }: ReviewCardProps): React.ReactElement {
 				/>
 				<ReviewCard.Title title={review.title} />
 				<ReviewCard.Body text={review.review} />
+				<ReviewCard.Tags tags={review.tags} id={review.id} />
 			</div>
 			<ReviewCard.Footer
 				store={review.store}
@@ -197,4 +219,5 @@ export function ReviewCard({ review }: ReviewCardProps): React.ReactElement {
 ReviewCard.Header = Header;
 ReviewCard.Title = Title;
 ReviewCard.Body = Body;
+ReviewCard.Tags = Tags;
 ReviewCard.Footer = Footer;

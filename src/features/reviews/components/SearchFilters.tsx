@@ -2,7 +2,12 @@ import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 
 const DEBOUNCE_DELAY = 300;
-export function SearchFilters(): React.ReactElement {
+const STAR_VALUES = [5, 4, 3, 2, 1] as const;
+
+const inputClassName =
+	"px-4 py-2 border border-[var(--color-border)] rounded-[var(--radius-base)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] bg-[var(--color-surface)]";
+
+function useSearchFilters() {
 	const { q: urlQ, rating: urlRating, start: urlStart, end: urlEnd } = useSearch({ from: "/" });
 	const navigate = useNavigate({ from: "/" });
 
@@ -20,42 +25,83 @@ export function SearchFilters(): React.ReactElement {
 		const value = event.target.value;
 		setLocalQ(value);
 		clearTimeout(debounceRef.current);
-		debounceRef.current = setTimeout(() => {
-			void navigate({
+		debounceRef.current = setTimeout(async () => {
+			await navigate({
 				search: (prev) => ({ ...prev, q: value, page: 1 }),
 				replace: false,
 			});
 		}, DEBOUNCE_DELAY);
-	}
+	};
 
-	const handleRatingChange = (
-		event: React.ChangeEvent<HTMLSelectElement>,
-	): void => {
-		const value = event.target.value;
-		const rating = value === "" ? undefined : value.split(",").map(Number);
-		void navigate({
+	const handleStarToggle = async (star: number): Promise<void> => {
+		const current = urlRating ?? [];
+		const next = current.includes(star)
+			? current.filter((s) => s !== star)
+			: [...current, star];
+		const rating = next.length === 0 ? undefined : next;
+		await navigate({
 			search: (prev) => ({ ...prev, rating, page: 1 }),
 			replace: false,
 		});
-	}
+	};
 
-	const handleStartChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+	const handleStartChange = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
 		const value = event.target.value || undefined;
-		void navigate({
+		await navigate({
 			search: (prev) => ({ ...prev, start: value, page: 1 }),
 			replace: false,
 		});
 	};
 
-	const handleEndChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+	const handleEndChange = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
 		const value = event.target.value || undefined;
-		void navigate({
+		await navigate({
 			search: (prev) => ({ ...prev, end: value, page: 1 }),
 			replace: false,
 		});
 	};
 
-	const ratingValue = urlRating ? urlRating.join(",") : "";
+	return { localQ, urlRating, urlStart, urlEnd, handleSearchChange, handleStarToggle, handleStartChange, handleEndChange };
+}
+
+type StarRatingFilterProps = {
+	urlRating: number[] | undefined;
+	onToggle: (star: number) => void;
+};
+
+function StarRatingFilter({ urlRating, onToggle }: StarRatingFilterProps): React.ReactElement {
+	return (
+		<fieldset className="flex flex-col gap-1 text-sm font-medium text-[var(--color-text)]">
+			<legend>Rating</legend>
+			<div className="flex gap-3 py-2">
+				{STAR_VALUES.map((star) => (
+					<label key={star} className="flex items-center gap-1 cursor-pointer">
+						<input
+							type="checkbox"
+							value={star}
+							checked={urlRating?.includes(star) ?? false}
+							onChange={() => onToggle(star)}
+							className="accent-[var(--color-primary)]"
+						/>
+						{star}★
+					</label>
+				))}
+			</div>
+		</fieldset>
+	);
+}
+
+export function SearchFilters(): React.ReactElement {
+	const {
+		localQ,
+		urlRating,
+		urlStart,
+		urlEnd,
+		handleSearchChange,
+		handleStarToggle,
+		handleStartChange,
+		handleEndChange,
+	} = useSearchFilters();
 
 	return (
 		<search
@@ -70,25 +116,10 @@ export function SearchFilters(): React.ReactElement {
 					placeholder="Search reviews…"
 					value={localQ}
 					onChange={handleSearchChange}
-					className="px-4 py-2 border border-[var(--color-border)] rounded-[var(--radius-base)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] bg-[var(--color-surface)]"
+					className={inputClassName}
 				/>
 			</label>
-			<label className="flex flex-col gap-1 text-sm font-medium text-[var(--color-text)]">
-				Rating
-				<select
-					aria-label="Filter by rating"
-					value={ratingValue}
-					onChange={handleRatingChange}
-					className="px-4 py-2 border border-[var(--color-border)] rounded-[var(--radius-base)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] bg-[var(--color-surface)]"
-				>
-					<option value="">All ratings</option>
-					<option value="5">5 stars</option>
-					<option value="4">4 stars</option>
-					<option value="3">3 stars</option>
-					<option value="2">2 stars</option>
-					<option value="1">1 star</option>
-				</select>
-			</label>
+			<StarRatingFilter urlRating={urlRating} onToggle={handleStarToggle} />
 			<label className="flex flex-col gap-1 text-sm font-medium text-[var(--color-text)]">
 				From
 				<input
@@ -96,7 +127,7 @@ export function SearchFilters(): React.ReactElement {
 					aria-label="Start date"
 					value={urlStart ?? ""}
 					onChange={handleStartChange}
-					className="px-4 py-2 border border-[var(--color-border)] rounded-[var(--radius-base)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] bg-[var(--color-surface)]"
+					className={inputClassName}
 				/>
 			</label>
 			<label className="flex flex-col gap-1 text-sm font-medium text-[var(--color-text)]">
@@ -106,7 +137,7 @@ export function SearchFilters(): React.ReactElement {
 					aria-label="End date"
 					value={urlEnd ?? ""}
 					onChange={handleEndChange}
-					className="px-4 py-2 border border-[var(--color-border)] rounded-[var(--radius-base)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] bg-[var(--color-surface)]"
+					className={inputClassName}
 				/>
 			</label>
 		</search>
