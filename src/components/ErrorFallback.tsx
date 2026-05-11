@@ -9,7 +9,7 @@ export function ErrorFallback({
 }: ErrorFallbackProps): React.ReactElement {
 	const queryClient = useQueryClient();
 
-	function handleRetry(): void {
+	const handleRetry = (): void => {
 		void queryClient.resetQueries();
 		reset();
 	}

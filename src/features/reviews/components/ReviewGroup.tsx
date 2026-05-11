@@ -19,7 +19,7 @@ export function ReviewGroup({ group }: ReviewGroupProps): React.ReactElement {
 			</h2>
 			<ul className="flex flex-col gap-3 list-none p-0 m-0">
 				{group.reviews.map((review) => (
-					<li key={review.id}>
+					<li key={`review-${review.id}`}>
 						<ReviewCard review={review} />
 					</li>
 				))}

@@ -16,7 +16,7 @@ export function LoadMore({
 
 	if (!hasNextPage) return null;
 
-	function handleClick(): void {
+	const handleClick = (): void => {
 		void navigate({
 			search: (prev) => ({ ...prev, page: page + 1 }),
 			replace: false,

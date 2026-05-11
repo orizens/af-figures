@@ -10,6 +10,7 @@ const PAGE_SIZE = 25;
 export interface UseReviewsResult {
 	groups: ReviewGroup[];
 	totalReviews: number;
+	pagesLoaded: number;
 	isFetching: boolean;
 	isFetchingNextPage: boolean;
 	isError: boolean;
@@ -45,11 +46,13 @@ export function useReviews(): UseReviewsResult {
 
 	const allReviews = query.data?.pages.flatMap((p) => p.reviews) ?? [];
 	const totalReviews = query.data?.pages[0]?.total ?? 0;
+	const pagesLoaded = query.data?.pages.at(-1)?.this_page ?? 0;
 	const groups = groupReviewsByDate(allReviews);
 
 	return {
 		groups,
 		totalReviews,
+		pagesLoaded,
 		isFetching: query.isFetching,
 		isFetchingNextPage: query.isFetchingNextPage,
 		isError: query.isError,

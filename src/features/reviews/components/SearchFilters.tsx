@@ -1,38 +1,36 @@
 import { useNavigate, useSearch } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
-import { useDebounce } from "@/shared/hooks/useDebounce";
+import { useRef, useState } from "react";
 
+const DEBOUNCE_DELAY = 300;
 export function SearchFilters(): React.ReactElement {
 	const { q: urlQ, rating: urlRating } = useSearch({ from: "/" });
 	const navigate = useNavigate({ from: "/" });
 
 	const [localQ, setLocalQ] = useState(urlQ);
-	const debouncedQ = useDebounce(localQ, 400);
-	// Track when URL changed externally so we skip the debounce navigate
-	const urlSyncRef = useRef(false);
+	const [prevUrlQ, setPrevUrlQ] = useState(urlQ);
+	const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-	// Sync input back when URL changes externally (back/forward navigation)
-	useEffect(() => {
-		urlSyncRef.current = true;
+	// Render-time derived state: sync input when URL changes externally (back/forward)
+	if (urlQ !== prevUrlQ) {
+		setPrevUrlQ(urlQ);
 		setLocalQ(urlQ);
-	}, [urlQ]);
+	}
 
-	// Navigate when debounced search value settles
-	useEffect(() => {
-		if (urlSyncRef.current) {
-			urlSyncRef.current = false;
-			return;
-		}
-		if (debouncedQ === urlQ) return;
-		void navigate({
-			search: (prev) => ({ ...prev, q: debouncedQ, page: 1 }),
-			replace: false,
-		});
-	}, [debouncedQ, urlQ, navigate]);
+	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		const value = event.target.value;
+		setLocalQ(value);
+		clearTimeout(debounceRef.current);
+		debounceRef.current = setTimeout(() => {
+			void navigate({
+				search: (prev) => ({ ...prev, q: value, page: 1 }),
+				replace: false,
+			});
+		}, DEBOUNCE_DELAY);
+	}
 
-	function handleRatingChange(
+	const handleRatingChange = (
 		event: React.ChangeEvent<HTMLSelectElement>,
-	): void {
+	): void => {
 		const value = event.target.value;
 		const rating = value === "" ? undefined : value.split(",").map(Number);
 		void navigate({
@@ -53,7 +51,7 @@ export function SearchFilters(): React.ReactElement {
 				aria-label="Search reviews"
 				placeholder="Search reviews…"
 				value={localQ}
-				onChange={(e) => setLocalQ(e.target.value)}
+				onChange={handleSearchChange}
 				className="flex-1 px-4 py-2 border border-[var(--color-border)] rounded-[var(--radius-base)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] bg-[var(--color-surface)]"
 			/>
 			<select

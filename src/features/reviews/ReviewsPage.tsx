@@ -1,12 +1,6 @@
 import { ReviewsList } from "@/features/reviews/components/ReviewsList";
-import { ReviewsSummary } from "@/features/reviews/components/ReviewsSummary";
 import { SearchFilters } from "@/features/reviews/components/SearchFilters";
-import { useReviews } from "@/features/reviews/hooks/useReviews";
-
-function ReviewsSummaryConnected(): React.ReactElement {
-	const { totalReviews, isFetching } = useReviews();
-	return <ReviewsSummary totalReviews={totalReviews} isFetching={isFetching} />;
-}
+import { ReviewsSummaryConnected } from "@/features/reviews/components/ReviewsSummaryConnected";
 
 export function ReviewsPage(): React.ReactElement {
 	return (

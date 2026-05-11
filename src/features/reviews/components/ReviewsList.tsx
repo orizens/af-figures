@@ -23,6 +23,16 @@ function ReviewsListContent(): React.ReactElement {
 
 	return (
 		<div className="flex flex-col gap-6">
+			{isFetching && groups.length > 0 && (
+				<div
+					role="status"
+					aria-label="Updating reviews"
+					className="h-0.5 rounded-full overflow-hidden bg-[var(--color-primary)]/15"
+				>
+					<div className="h-full w-1/4 bg-[var(--color-primary)] rounded-full [animation:progress-slide_1.1s_ease-in-out_infinite]" />
+				</div>
+			)}
+
 			{isFetching && groups.length === 0 && (
 				<div
 					role="status"
@@ -48,7 +58,7 @@ function ReviewsListContent(): React.ReactElement {
 					className="flex flex-col gap-8"
 				>
 					{groups.map((group) => (
-						<ReviewGroup key={group.label} group={group} />
+						<ReviewGroup key={`group-${group.label}`} group={group} />
 					))}
 				</div>
 			)}
