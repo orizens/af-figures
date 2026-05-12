@@ -128,7 +128,7 @@ jobs:
     - name: Run Playwright tests
       id: playwright
       continue-on-error: true
-      run: bunx playwright test
+      run: bun run test:e2e
 
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
