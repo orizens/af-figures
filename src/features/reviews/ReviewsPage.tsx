@@ -1,6 +1,7 @@
 import { ReviewsList } from "@/features/reviews/components/ReviewsList";
-import { SearchBar, SidebarFilters, useSearchFiltersState } from "@/features/reviews/components/SearchFilters";
+import { SearchBar, SidebarFilters } from "@/features/reviews/components/SearchFilters";
 import { ReviewsSummaryConnected } from "@/features/reviews/components/ReviewsSummaryConnected";
+import { useSearchFilters } from "./components/useSearchFilters";
 
 export function ReviewsPage(): React.ReactElement {
 	const {
@@ -12,7 +13,7 @@ export function ReviewsPage(): React.ReactElement {
 		handleStarToggle,
 		handleStartChange,
 		handleEndChange,
-	} = useSearchFiltersState();
+	} = useSearchFilters();
 
 	return (
 		<div className="max-w-5xl mx-auto px-4 py-8">

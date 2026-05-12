@@ -21,13 +21,13 @@ Built with **Bun · Vite 8 · React 19 · TanStack Router v1 · TanStack Query v
 
 ### Prerequisites
 
-| Tool                  | Version | Install                                     |
-| --------------------- | ------- | ------------------------------------------- |
-| [Bun](https://bun.sh) | ≥ 1.1   | `curl -fsSL https://bun.sh/install \| bash` |
-
 > **macOS with Homebrew?**
 >
-> - Bun: `brew install oven-sh/bun/bun` or `npm i -g bun`
+> - Bun: `brew install oven-sh/bun/bun`
+
+> **macOS with NPM?**
+>
+> - Bun: `npm i -g bun`
 
 Either runtime works for running the app and E2E tests. **Bun is additionally required for unit tests** (the unit test script calls `bun test` directly).
 

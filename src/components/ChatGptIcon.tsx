@@ -1,5 +1,5 @@
 export const ChatGptIcon = (props: React.SVGProps<SVGSVGElement>) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
     <g fill="none" stroke="#000000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" color="currentColor">
         <path d="M11.745 14.85L6.905 12V7c0-2.21 1.825-4 4.076-4c1.397 0 2.63.69 3.365 1.741"></path>
         <path d="M9.6 19.18A4.1 4.1 0 0 0 13.02 21c2.25 0 4.076-1.79 4.076-4v-5L12.16 9.097"></path>
