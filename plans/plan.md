@@ -272,7 +272,7 @@ Browser history navigation scenarios:
 
 ## Verification Checklist
 
-1. `bun run dev` (`vite`) — dev server starts on `localhost:5173`, HMR works, browser auto-refreshes on save
+1. `bun run dev` (`vite`) — dev server starts on `localhost:4200`, HMR works, browser auto-refreshes on save
 2. `bun test` — all unit tests pass (dateGroups all section boundaries)
 3. `playwright test` — all E2E specs pass
 4. Load `/?q=crash&rating=1` — search + filter pre-populate (input shows "crash", dropdown shows "1 star"), API fires with correct params
@@ -290,5 +290,5 @@ Browser history navigation scenarios:
 1. **API response shape** — Fetch `https://appfigures.com/_u/careers/api/reviews` and inspect the JSON before finalising `src/shared/types/reviews.ts`. Confirm field names for `total`, `app`, and `Review` properties.
 2. **Page restoration on refresh** — The sequential `fetchNextPage` loop fires N API calls if `page=N`. If the API supports `count=N*25`, a single `useQuery` call at mount avoids multiple round trips. Confirm API limits.
 3. **Rating dropdown UX** — The example shows `rating=4,5` (multi-value), so multi-select checkboxes are assumed. Confirm with design whether single-select ("1 star", "2 stars" exclusively) is preferred.
-4. **Playwright config** — Set `baseURL: 'http://localhost:5173'` in `playwright.config.ts`; add a `webServer: { command: 'bun run dev', port: 5173, reuseExistingServer: true }` to auto-start Vite before running tests.
+4. **Playwright config** — Set `baseURL: 'http://localhost:4200'` in `playwright.config.ts`; add a `webServer: { command: 'bun run dev', port: 4200, reuseExistingServer: true }` to auto-start Vite before running tests.
 5. **Static deployment** — `bun run build` produces a `dist/` folder of static files; deploy to any CDN/static host (Netlify, Vercel, GitHub Pages). No server runtime required.

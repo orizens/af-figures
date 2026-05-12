@@ -10,7 +10,7 @@ export default defineConfig({
     ? [['blob'], ['line']]
     : [['html', { open: 'never' }], ['line']],
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://localhost:4200',
     trace: 'retain-on-failure',
   },
   projects: [
@@ -21,8 +21,10 @@ export default defineConfig({
   ],
   webServer: {
     command: 'bun run dev --host 0.0.0.0',
-    port: 5173,
+    port: 4200,
     reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
+    timeout: 120_000,
+    stdout: 'pipe',
+    stderr: 'pipe',
   },
 })
