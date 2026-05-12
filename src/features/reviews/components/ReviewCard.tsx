@@ -12,30 +12,36 @@ const STORE_LABELS: Record<string, string> = {
 	amazon: "Amazon",
 };
 
-const AVATAR_COLORS = [
-	"#6366f1", "#8b5cf6", "#ec4899", "#f43f5e",
-	"#0ea5e9", "#14b8a6", "#10b981", "#f59e0b",
+const AVATAR_CLASSES = [
+	"bg-indigo-500", "bg-violet-500", "bg-pink-500", "bg-rose-500",
+	"bg-sky-500", "bg-teal-500", "bg-emerald-500", "bg-amber-500",
 ];
 
-function getAvatarColor(name: string): string {
+function parseStars(stars: string): number {
+	return parseFloat(stars);
+}
+
+function getAvatarClass(name: string): string {
 	let hash = 0;
 	for (let i = 0; i < name.length; i++) {
 		hash = name.charCodeAt(i) + ((hash << 5) - hash);
 	}
-	return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+	return AVATAR_CLASSES[Math.abs(hash) % AVATAR_CLASSES.length];
 }
 
 function getInitials(name: string): string {
-	const parts = name.trim().split(/\s+/);
+	const trimmed = name.trim();
+	if (!trimmed) return "?";
+	const parts = trimmed.split(/\s+/);
 	if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
 	return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
-function getRatingAccent(stars: string): string {
-	const value = parseFloat(stars);
-	if (value >= 4) return "var(--color-rating-high)";
-	if (value >= 3) return "var(--color-rating-mid)";
-	return "var(--color-rating-low)";
+function getRatingBorderClass(stars: string): string {
+	const value = parseStars(stars);
+	if (value >= 4) return "border-l-rating-high";
+	if (value >= 3) return "border-l-rating-mid";
+	return "border-l-rating-low";
 }
 
 // --- Sub-components ---
@@ -46,7 +52,7 @@ interface StarRatingProps {
 }
 
 function StarRating({ stars, id }: StarRatingProps): React.ReactElement {
-	const value = parseFloat(stars);
+	const value = parseStars(stars);
 	const rounded = Math.round(value);
 
 	return (
@@ -70,13 +76,12 @@ interface HeaderProps {
 
 function Header({ author, date, stars, id }: HeaderProps): React.ReactElement {
 	const initials = getInitials(author);
-	const avatarColor = getAvatarColor(author);
+	const avatarClass = getAvatarClass(author);
 
 	return (
 		<div className="flex items-center gap-3">
 			<span
-				className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0 select-none"
-				style={{ backgroundColor: avatarColor }}
+				className={`w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0 select-none ${avatarClass}`}
 				aria-hidden="true"
 			>
 				{initials}
@@ -119,7 +124,7 @@ function Body({ text }: BodyProps): React.ReactElement {
 }
 
 interface TagsProps {
-	tags: string[];
+	tags: string[] | null;
 	id: string;
 }
 
@@ -173,23 +178,12 @@ function Footer({ store, version, hasResponse }: FooterProps): React.ReactElemen
 // --- Main component ---
 
 export function ReviewCard({ review }: ReviewCardProps): React.ReactElement {
-	const accentColor = getRatingAccent(review.stars);
+	const borderClass = getRatingBorderClass(review.stars);
 
 	return (
 		<article
-			role="article"
 			aria-label={`${review.title} by ${review.author}`}
-			className="bg-surface rounded-card flex flex-col overflow-hidden transition-all duration-200 hover:-translate-y-0.5"
-			style={{
-				boxShadow: "var(--shadow-card)",
-				borderLeft: `3px solid ${accentColor}`,
-			}}
-			onMouseEnter={(e) => {
-				(e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-card-hover)";
-			}}
-			onMouseLeave={(e) => {
-				(e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-card)";
-			}}
+			className={`bg-surface rounded-card flex flex-col overflow-hidden transition-all duration-200 hover:-translate-y-0.5 shadow-card hover:shadow-card-hover border-l-[3px] ${borderClass}`}
 		>
 			<div className="flex flex-col gap-3 p-4 flex-1">
 				<ReviewCard.Header

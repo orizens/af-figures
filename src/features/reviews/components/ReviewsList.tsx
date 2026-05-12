@@ -12,7 +12,6 @@ function ReviewsListContent(): React.ReactElement {
 		isError,
 		error,
 		hasNextPage,
-		fetchNextPage,
 	} = useReviews();
 
 	if (isError) {
@@ -66,7 +65,6 @@ function ReviewsListContent(): React.ReactElement {
 			<LoadMore
 				hasNextPage={hasNextPage}
 				isFetchingNextPage={isFetchingNextPage}
-				fetchNextPage={fetchNextPage}
 			/>
 		</div>
 	);

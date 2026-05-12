@@ -1,17 +1,18 @@
-import { useSearch } from "@tanstack/react-router";
-
 interface ReviewsSummaryProps {
 	totalReviews: number;
 	pagesLoaded: number;
 	isFetching: boolean;
+	q: string;
+	rating: number[] | undefined;
 }
 
 export function ReviewsSummary({
 	totalReviews,
 	pagesLoaded,
 	isFetching,
+	q,
+	rating,
 }: ReviewsSummaryProps): React.ReactElement {
-	const { q, rating } = useSearch({ from: "/" });
 
 	const hasFilters = q !== "" || (rating !== undefined && rating.length > 0);
 	const reviewsLabel = hasFilters

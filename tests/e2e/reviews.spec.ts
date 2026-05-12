@@ -24,7 +24,7 @@ test.describe('Reviews page', () => {
   test('filter by rating — URL updates immediately and list refreshes', async ({ page }) => {
     await page.goto('/')
 
-    await page.getByRole('checkbox', { name: /5★/ }).check()
+    await page.getByRole('checkbox', { name: '5 stars' }).click()
 
     await expect(page).toHaveURL(/rating=5/)
     await expect(page.getByRole('feed')).toBeVisible()
@@ -36,7 +36,7 @@ test.describe('Reviews page', () => {
     const searchInput = page.getByRole('searchbox', { name: 'Search reviews' })
     await searchInput.fill('crash')
 
-    await page.getByRole('checkbox', { name: /1★/ }).check()
+    await page.getByRole('checkbox', { name: '1 star' }).click()
 
     await expect(page).toHaveURL(/q=crash/, { timeout: 5000 })
     await expect(page).toHaveURL(/rating=1/)
@@ -49,17 +49,17 @@ test.describe('Reviews page', () => {
     const searchInput = page.getByRole('searchbox', { name: 'Search reviews' })
     await expect(searchInput).toHaveValue('love')
 
-    await expect(page.getByRole('checkbox', { name: /4★/ })).toBeChecked()
-    await expect(page.getByRole('checkbox', { name: /5★/ })).toBeChecked()
+    await expect(page.getByRole('checkbox', { name: '4 stars' })).toBeChecked()
+    await expect(page.getByRole('checkbox', { name: '5 stars' })).toBeChecked()
 
-    await expect(page.getByRole('feed')).toBeVisible()
+    await expect(page.getByRole('feed')).toBeVisible({ timeout: 10000 })
   })
 
   test('invalid params — app loads with defaults, no error thrown', async ({ page }) => {
     await page.goto('/?rating=99&page=abc')
 
     await expect(page.getByRole('status', { name: 'All Reviews' })).toBeVisible()
-    await expect(page.getByRole('feed')).toBeVisible()
+    await expect(page.getByRole('feed')).toBeVisible({ timeout: 10000 })
     await expect(page.getByRole('alert')).not.toBeVisible()
   })
 

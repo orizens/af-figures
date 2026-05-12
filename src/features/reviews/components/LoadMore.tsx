@@ -3,13 +3,11 @@ import { useNavigate, useSearch } from "@tanstack/react-router";
 interface LoadMoreProps {
 	hasNextPage: boolean;
 	isFetchingNextPage: boolean;
-	fetchNextPage: () => void;
 }
 
 export function LoadMore({
 	hasNextPage,
 	isFetchingNextPage,
-	fetchNextPage,
 }: LoadMoreProps): React.ReactElement | null {
 	const { page } = useSearch({ from: "/" });
 	const navigate = useNavigate({ from: "/" });
@@ -21,7 +19,6 @@ export function LoadMore({
 			search: (prev) => ({ ...prev, page: page + 1 }),
 			replace: false,
 		});
-		fetchNextPage();
 	}
 
 	return (

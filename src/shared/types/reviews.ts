@@ -19,7 +19,7 @@ export interface Review {
 	store: string;
 	weight: number;
 	predicted_langs: string[];
-	tags: string[];
+	tags: string[] | null;
 }
 
 export interface ReviewsResponse {

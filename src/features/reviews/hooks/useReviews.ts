@@ -16,7 +16,6 @@ export interface UseReviewsResult {
 	isError: boolean;
 	error: Error | null;
 	hasNextPage: boolean;
-	fetchNextPage: () => void;
 }
 
 export function useReviews(): UseReviewsResult {
@@ -31,7 +30,7 @@ export function useReviews(): UseReviewsResult {
 		})),
 	});
 
-	const allReviews = queries.flatMap((q) => q.data?.reviews ?? []);
+	const allReviews = queries.flatMap((result) => result.data?.reviews ?? []);
 	const totalReviews = queries[0]?.data?.total ?? 0;
 	const pagesLoaded = queries.filter((q) => !!q.data).length;
 	const isFetching = queries.some((q) => q.isFetching);
@@ -51,6 +50,5 @@ export function useReviews(): UseReviewsResult {
 		isError,
 		error,
 		hasNextPage,
-		fetchNextPage: () => {},
 	};
 }

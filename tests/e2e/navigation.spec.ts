@@ -20,13 +20,13 @@ test.describe('Browser history navigation', () => {
     await page.goto('/')
     await page.getByRole('feed').waitFor()
 
-    await page.getByRole('checkbox', { name: /5★/ }).check()
+    await page.getByRole('checkbox', { name: '5 stars' }).click()
     await expect(page).toHaveURL(/rating=5/)
 
     await page.goBack()
 
     await expect(page).not.toHaveURL(/rating=5/)
-    await expect(page.getByRole('checkbox', { name: /5★/ })).not.toBeChecked()
+    await expect(page.getByRole('checkbox', { name: '5 stars' })).not.toBeChecked()
     await expect(page.getByRole('status', { name: 'All Reviews' })).toBeVisible()
   })
 
@@ -34,7 +34,7 @@ test.describe('Browser history navigation', () => {
     await page.goto('/')
     await page.getByRole('feed').waitFor()
 
-    await page.getByRole('checkbox', { name: /5★/ }).check()
+    await page.getByRole('checkbox', { name: '5 stars' }).click()
     await expect(page).toHaveURL(/rating=5/)
 
     await page.goBack()
@@ -55,7 +55,7 @@ test.describe('Browser history navigation', () => {
     await expect(page).toHaveURL(/q=love/, { timeout: 5000 })
 
     // Step 2: rating filter
-    await page.getByRole('checkbox', { name: /5★/ }).check()
+    await page.getByRole('checkbox', { name: '5 stars' }).click()
     await expect(page).toHaveURL(/rating=5/)
 
     // Step 3: load more
