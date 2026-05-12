@@ -1,7 +1,7 @@
 # ChatGPT Reviews App
 
 Hi!  
-I'm [Oren Farhi](https://orizens.com) - a senior software engineer focusing on well designed front end architecture. I help teams turn complex business needs into practical web platforms that people rely on every day.
+I'm [Oren Farhi](https://orizens.com) ([CV](https://orizens.com/cv))- a senior software engineer focusing on well designed front end architecture. I help teams turn complex business needs into practical web platforms that people rely on every day.
 
 I chose to use `bun` instead of node because if its high performance system - as well as because of the fact it includes workspace management (mono-repo support), package manager and a runtime outside built in. I've been experimenting with it in the last few months.
 
