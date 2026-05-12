@@ -13,7 +13,7 @@ export function ReviewGroup({ group }: ReviewGroupProps): React.ReactElement {
 		<section aria-labelledby={headingId} className="flex flex-col gap-3">
 			<h2
 				id={headingId}
-				className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] sticky top-0 bg-[var(--color-surface-raised)] py-2 px-1"
+				className="text-xs font-semibold uppercase tracking-wider text-text-muted sticky top-0 bg-surface-raised py-2 px-1"
 			>
 				{group.label}
 			</h2>

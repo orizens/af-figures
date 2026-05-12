@@ -1,3 +1,4 @@
+import { StarIcon } from "@/components/StarIcon";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 
@@ -5,7 +6,7 @@ const DEBOUNCE_DELAY = 300;
 const STAR_VALUES = [5, 4, 3, 2, 1] as const;
 
 const inputClassName =
-	"px-4 py-2 border border-[var(--color-border)] rounded-[var(--radius-base)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] bg-[var(--color-surface)]";
+	"px-4 py-2 border border-border rounded-base text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-surface";
 
 function useSearchFilters() {
 	const { q: urlQ, rating: urlRating, start: urlStart, end: urlEnd } = useSearch({ from: "/" });
@@ -71,7 +72,7 @@ type StarRatingFilterProps = {
 
 function StarRatingFilter({ urlRating, onToggle }: StarRatingFilterProps): React.ReactElement {
 	return (
-		<fieldset className="flex flex-col gap-1 text-sm font-medium text-[var(--color-text)]">
+		<fieldset className="flex flex-col gap-1 text-sm font-medium text-text">
 			<legend>Rating</legend>
 			<div className="flex gap-3 py-2">
 				{STAR_VALUES.map((star) => (
@@ -81,9 +82,10 @@ function StarRatingFilter({ urlRating, onToggle }: StarRatingFilterProps): React
 							value={star}
 							checked={urlRating?.includes(star) ?? false}
 							onChange={() => onToggle(star)}
-							className="accent-[var(--color-primary)]"
+							className="accent-primary"
 						/>
-						{star}★
+						{star}
+						<StarIcon />
 					</label>
 				))}
 			</div>
@@ -108,7 +110,7 @@ export function SearchFilters(): React.ReactElement {
 			aria-label="Reviews search"
 			className="flex flex-col sm:flex-row gap-3 items-end"
 		>
-			<label className="flex flex-col gap-1 flex-1 text-sm font-medium text-[var(--color-text)]">
+			<label className="flex flex-col gap-1 flex-1 text-sm font-medium text-text">
 				Search
 				<input
 					type="search"
@@ -120,7 +122,7 @@ export function SearchFilters(): React.ReactElement {
 				/>
 			</label>
 			<StarRatingFilter urlRating={urlRating} onToggle={handleStarToggle} />
-			<label className="flex flex-col gap-1 text-sm font-medium text-[var(--color-text)]">
+			<label className="flex flex-col gap-1 text-sm font-medium text-text">
 				From
 				<input
 					type="date"
@@ -130,7 +132,7 @@ export function SearchFilters(): React.ReactElement {
 					className={inputClassName}
 				/>
 			</label>
-			<label className="flex flex-col gap-1 text-sm font-medium text-[var(--color-text)]">
+			<label className="flex flex-col gap-1 text-sm font-medium text-text">
 				To
 				<input
 					type="date"

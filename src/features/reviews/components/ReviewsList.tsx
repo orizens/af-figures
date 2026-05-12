@@ -27,9 +27,9 @@ function ReviewsListContent(): React.ReactElement {
 				<div
 					role="status"
 					aria-label="Updating reviews"
-					className="h-0.5 rounded-full overflow-hidden bg-[var(--color-primary)]/15"
+					className="h-0.5 rounded-full overflow-hidden bg-primary/15"
 				>
-					<div className="h-full w-1/4 bg-[var(--color-primary)] rounded-full [animation:progress-slide_1.1s_ease-in-out_infinite]" />
+					<div className="h-full w-1/4 bg-primary rounded-full [animation:progress-slide_1.1s_ease-in-out_infinite]" />
 				</div>
 			)}
 
@@ -40,12 +40,12 @@ function ReviewsListContent(): React.ReactElement {
 					aria-label="Loading reviews"
 					className="flex justify-center py-12"
 				>
-					<div className="w-8 h-8 border-2 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin" />
+					<div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
 				</div>
 			)}
 
 			{isEmpty && (
-				<p className="text-center text-[var(--color-text-muted)] py-12">
+				<p className="text-center text-text-muted py-12">
 					No reviews found.
 				</p>
 			)}
