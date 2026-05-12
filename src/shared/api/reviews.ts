@@ -11,7 +11,7 @@ export function getReviews(
 	signal?: AbortSignal,
 ): Promise<ReviewsResponse> {
 	const queryParams: Record<string, string> = {
-		sort: "-date",
+		sort: params.sort === "asc" ? "date" : "-date",
 		page: String(params.page),
 		count: String(params.count ?? PAGE_SIZE),
 	};

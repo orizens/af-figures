@@ -27,6 +27,7 @@ export const Route = createFileRoute("/")({
 		q: z.string().default("").catch(""),
 		rating: ratingSchema,
 		page: z.coerce.number().int().min(1).default(1).catch(1),
+		sort: z.enum(["asc", "desc"]).default("desc").catch("desc"),
 		start: dateSchema,
 		end: dateSchema,
 	}),

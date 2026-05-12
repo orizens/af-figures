@@ -1,21 +1,13 @@
 import { useDebouncedCallback } from "@/shared/hooks/useDebouncedCallback";
+import type { SortOrder } from "@/shared/types/reviews";
 import { useSearch, useNavigate } from "@tanstack/react-router";
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 
 const DEBOUNCE_DELAY = 300;
 
 export function useSearchFilters() {
-	const { q: urlQ, rating: urlRating, start: urlStart, end: urlEnd } = useSearch({ from: "/" });
+	const { q: urlQ, rating: urlRating, start: urlStart, end: urlEnd, sort: urlSort } = useSearch({ from: "/" });
 	const navigate = useNavigate({ from: "/" });
-
-	const [localQ, setLocalQ] = useState(urlQ);
-	const [prevUrlQ, setPrevUrlQ] = useState(urlQ);
-
-	// Render-time derived state: sync input when URL changes externally (back/forward)
-	if (urlQ !== prevUrlQ) {
-		setPrevUrlQ(urlQ);
-		setLocalQ(urlQ);
-	}
 
 	const navigateQ = useCallback(
 		(value: string) => {
@@ -26,9 +18,7 @@ export function useSearchFilters() {
 	const debouncedNavigateQ = useDebouncedCallback(navigateQ, DEBOUNCE_DELAY);
 
 	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		const value = event.target.value;
-		setLocalQ(value);
-		debouncedNavigateQ(value);
+		debouncedNavigateQ(event.target.value);
 	};
 
 	const handleStarToggle = async (star: number): Promise<void> => {
@@ -59,5 +49,12 @@ export function useSearchFilters() {
 		});
 	};
 
-	return { localQ, urlRating, urlStart, urlEnd, handleSearchChange, handleStarToggle, handleStartChange, handleEndChange };
+	const handleSortChange = async (value: SortOrder): Promise<void> => {
+		await navigate({
+			search: (prev) => ({ ...prev, sort: value, page: 1 }),
+			replace: false,
+		});
+	};
+
+	return { q: urlQ, urlRating, urlStart, urlEnd, urlSort, handleSearchChange, handleStarToggle, handleStartChange, handleEndChange, handleSortChange };
 }

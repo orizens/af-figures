@@ -31,10 +31,13 @@ export interface ReviewsResponse {
 	reviews: Review[];
 }
 
+export type SortOrder = "asc" | "desc";
+
 export interface ReviewSearchParams {
 	q: string;
 	rating: number[] | undefined;
 	page: number;
+	sort?: SortOrder;
 	/** yyyy-mm-dd — only reviews created on or after this date */
 	start?: string;
 	/** yyyy-mm-dd — only reviews created on or before this date */

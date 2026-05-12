@@ -19,13 +19,13 @@ export interface UseReviewsResult {
 }
 
 export function useReviews(): UseReviewsResult {
-	const { q, rating, page: urlPage, start, end } = useSearch({ from: "/" });
+	const { q, rating, page: urlPage, sort, start, end } = useSearch({ from: "/" });
 
 	const queries = useQueries({
 		queries: Array.from({ length: urlPage }, (_, i) => ({
-			queryKey: ["reviews", { q, rating, page: i + 1, start, end }],
+			queryKey: ["reviews", { q, rating, page: i + 1, sort, start, end }],
 			queryFn: ({ signal }: { signal: AbortSignal }) =>
-				getReviews({ q, rating, page: i + 1, count: PAGE_SIZE, start, end }, signal),
+				getReviews({ q, rating, page: i + 1, count: PAGE_SIZE, sort, start, end }, signal),
 			placeholderData: (prev: ReviewsResponse | undefined) => prev,
 		})),
 	});
