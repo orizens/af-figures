@@ -3,9 +3,11 @@ import { useSearch } from "@tanstack/react-router";
 import type { ReviewGroup } from "@/features/reviews/utils/dateGroups";
 import { groupReviewsByDate } from "@/features/reviews/utils/dateGroups";
 import { getReviews } from "@/shared/api/reviews";
+import { useDebounce } from "@/shared/hooks/useDebounce";
 import type { ReviewsResponse } from "@/shared/types/reviews";
 
 const PAGE_SIZE = 25;
+const DEBOUNCE_DELAY = 300;
 
 export interface UseReviewsResult {
 	groups: ReviewGroup[];
@@ -20,12 +22,13 @@ export interface UseReviewsResult {
 
 export function useReviews(): UseReviewsResult {
 	const { q, rating, page: urlPage, sort, start, end } = useSearch({ from: "/" });
+	const debouncedQ = useDebounce(q, DEBOUNCE_DELAY);
 
 	const queries = useQueries({
 		queries: Array.from({ length: urlPage }, (_, i) => ({
-			queryKey: ["reviews", { q, rating, page: i + 1, sort, start, end }],
+			queryKey: ["reviews", { q: debouncedQ, rating, page: i + 1, sort, start, end }],
 			queryFn: ({ signal }: { signal: AbortSignal }) =>
-				getReviews({ q, rating, page: i + 1, count: PAGE_SIZE, sort, start, end }, signal),
+				getReviews({ q: debouncedQ, rating, page: i + 1, count: PAGE_SIZE, sort, start, end }, signal),
 			placeholderData: (prev: ReviewsResponse | undefined) => prev,
 		})),
 	});

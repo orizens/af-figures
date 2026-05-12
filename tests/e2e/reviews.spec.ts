@@ -118,4 +118,16 @@ test.describe('Reviews page', () => {
       timeout: 5000,
     })
   })
+
+  test('should reflect typed characters immediately before debounce fires', async ({ page }) => {
+    await page.goto('/')
+
+    const searchInput = page.getByRole('searchbox', { name: 'Search reviews' })
+
+    // Type char-by-char to expose the controlled-input bug:
+    // each keystroke should be visible in the input without waiting for debounce
+    await searchInput.pressSequentially('lo', { delay: 50 })
+
+    await expect(searchInput).toHaveValue('lo')
+  })
 })

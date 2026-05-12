@@ -1,9 +1,6 @@
-import { useDebouncedCallback } from "@/shared/hooks/useDebouncedCallback";
 import type { SortOrder } from "@/shared/types/reviews";
 import { useSearch, useNavigate } from "@tanstack/react-router";
 import { useCallback } from "react";
-
-const DEBOUNCE_DELAY = 300;
 
 export function useSearchFilters() {
 	const { q: urlQ, rating: urlRating, start: urlStart, end: urlEnd, sort: urlSort } = useSearch({ from: "/" });
@@ -11,14 +8,13 @@ export function useSearchFilters() {
 
 	const navigateQ = useCallback(
 		(value: string) => {
-			navigate({ search: (prev) => ({ ...prev, q: value, page: 1 }), replace: false });
+			navigate({ search: (prev) => ({ ...prev, q: value, page: 1 }), replace: true });
 		},
 		[navigate],
 	);
-	const debouncedNavigateQ = useDebouncedCallback(navigateQ, DEBOUNCE_DELAY);
 
 	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		debouncedNavigateQ(event.target.value);
+		navigateQ(event.target.value);
 	};
 
 	const handleStarToggle = async (star: number): Promise<void> => {
