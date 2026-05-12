@@ -4,16 +4,12 @@ export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
   forbidOnly: !!process.env['CI'],
-  retries: process.env['CI'] ? 2 : 0,
+  retries: process.env['CI'] ? 0 : 0,
   workers: process.env['CI'] ? 1 : undefined,
-  timeout: 30_000,
   reporter: [
     ['html', { open: 'never' }],
     ['line'],
   ],
-  expect: {
-    timeout: 15_000,
-  },
   use: {
     baseURL: 'http://localhost:5173',
     trace: 'retain-on-failure',
