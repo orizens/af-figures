@@ -91,12 +91,6 @@ jobs:
     needs: [build_and_preview, install_playwright]
     timeout-minutes: 3
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        shardIndex: [1, 2]
-        shardTotal: [2]
-
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -132,8 +126,7 @@ jobs:
       run: bunx playwright install chromium --with-deps
 
     - name: Run Playwright tests
-      run: |
-        bun run test:e2e --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+      run: bun run test:e2e
 
     - uses: actions/upload-artifact@v4
       if: always()
