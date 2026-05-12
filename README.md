@@ -9,6 +9,8 @@ I use AI extensively to accelerate implementation and exploration - without comp
 
 I've found tailwindcss to work well with agentic driven development - however, I'm also working with css-in-js solutions which provides high DX for styling and integrating a well defined type safe design system (i.e chakra-ui).
 
+I included the [plan](./plans/plan.md) that I created with the AI agent.
+
 # Intro
 
 A pure client-side React SPA that displays and filters app reviews from the Appfigures API.
