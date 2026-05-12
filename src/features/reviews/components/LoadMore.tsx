@@ -18,6 +18,7 @@ export function LoadMore({
 		void navigate({
 			search: (prev) => ({ ...prev, page: page + 1 }),
 			replace: false,
+			resetScroll: false,
 		});
 	}
 
@@ -31,7 +32,17 @@ export function LoadMore({
 				disabled={isFetchingNextPage}
 				className="px-6 py-2 bg-primary text-white rounded-base text-sm font-medium hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
 			>
-				{isFetchingNextPage ? "Loading…" : "Load more reviews"}
+				{isFetchingNextPage ? (
+					<span className="flex items-center gap-2">
+						<span
+							aria-hidden="true"
+							className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"
+						/>
+						Loading…
+					</span>
+				) : (
+					"Load more reviews"
+				)}
 			</button>
 		</div>
 	);
