@@ -24,8 +24,7 @@ test.describe('Reviews page', () => {
   test('filter by rating — URL updates immediately and list refreshes', async ({ page }) => {
     await page.goto('/')
 
-    const ratingSelect = page.getByRole('combobox', { name: 'Filter by rating' })
-    await ratingSelect.selectOption('5')
+    await page.getByRole('checkbox', { name: /5★/ }).check()
 
     await expect(page).toHaveURL(/rating=5/)
     await expect(page.getByRole('feed')).toBeVisible()
@@ -37,8 +36,7 @@ test.describe('Reviews page', () => {
     const searchInput = page.getByRole('searchbox', { name: 'Search reviews' })
     await searchInput.fill('crash')
 
-    const ratingSelect = page.getByRole('combobox', { name: 'Filter by rating' })
-    await ratingSelect.selectOption('1')
+    await page.getByRole('checkbox', { name: /1★/ }).check()
 
     await expect(page).toHaveURL(/q=crash/, { timeout: 5000 })
     await expect(page).toHaveURL(/rating=1/)
@@ -51,8 +49,8 @@ test.describe('Reviews page', () => {
     const searchInput = page.getByRole('searchbox', { name: 'Search reviews' })
     await expect(searchInput).toHaveValue('love')
 
-    const ratingSelect = page.getByRole('combobox', { name: 'Filter by rating' })
-    await expect(ratingSelect).toHaveValue('4,5')
+    await expect(page.getByRole('checkbox', { name: /4★/ })).toBeChecked()
+    await expect(page.getByRole('checkbox', { name: /5★/ })).toBeChecked()
 
     await expect(page.getByRole('feed')).toBeVisible()
   })
