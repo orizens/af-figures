@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
-import { ReviewsPage } from "@/features/reviews/ReviewsPage";
+import { ReviewsPage } from "@/pages/ReviewsPage";
 
 const ratingSchema = z
 	.union([

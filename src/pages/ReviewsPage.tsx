@@ -1,7 +1,7 @@
 import { ReviewsList } from "@/features/reviews/components/ReviewsList";
-import { SidebarFilters } from "@/features/search/components/SearchFilters";
-import { SearchBar } from "../search/components/SearchBar";
 import { ReviewsSummaryConnected } from "@/features/reviews/components/ReviewsSummaryConnected";
+import { SearchBar } from "@/features/search/components/SearchBar";
+import { SidebarFilters } from "@/features/search/components/SearchFilters";
 
 export function ReviewsPage(): React.ReactElement {
 	return (
