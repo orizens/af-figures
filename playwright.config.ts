@@ -4,12 +4,14 @@ export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
   forbidOnly: !!process.env['CI'],
-  retries: process.env['CI'] ? 2 : 0,
+  retries: process.env['CI'] ? 0 : 0,
   workers: process.env['CI'] ? 1 : undefined,
-  reporter: 'html',
+  reporter: process.env.CI
+    ? [['blob'], ['line']]
+    : [['html', { open: 'never' }], ['line']],
   use: {
     baseURL: 'http://localhost:5173',
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
   },
   projects: [
     {
@@ -18,8 +20,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'bun run dev',
+    command: 'bun run dev --host 0.0.0.0',
     port: 5173,
-    reuseExistingServer: !process.env['CI'],
+    reuseExistingServer: !process.env.CI,
+    timeout: 120 * 1000,
   },
 })
