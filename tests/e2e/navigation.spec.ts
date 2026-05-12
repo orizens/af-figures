@@ -8,7 +8,9 @@ test.describe('Browser history navigation', () => {
     const searchInput = page.getByRole('searchbox', { name: 'Search reviews' })
     await searchInput.fill('love')
     await expect(page).toHaveURL(/q=love/, { timeout: 5000 })
-
+  
+    await expect(page.getByText('1 page loaded')).toBeVisible()
+  
     await page.goBack()
 
     await expect(page).not.toHaveURL(/q=love/)

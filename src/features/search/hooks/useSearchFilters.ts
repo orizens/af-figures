@@ -8,7 +8,7 @@ export function useSearchFilters() {
 
 	const navigateQ = useCallback(
 		(value: string) => {
-			navigate({ search: (prev) => ({ ...prev, q: value, page: 1 }), replace: true });
+			navigate({ search: (prev) => ({ ...prev, q: value, page: 1 }), replace: false });
 		},
 		[navigate],
 	);
@@ -52,5 +52,5 @@ export function useSearchFilters() {
 		});
 	};
 
-	return { q: urlQ, urlRating, urlStart, urlEnd, urlSort, handleSearchChange, handleStarToggle, handleStartChange, handleEndChange, handleSortChange };
+	return { q: urlQ, urlRating, urlStart, urlEnd, urlSort, navigateQ, handleSearchChange, handleStarToggle, handleStartChange, handleEndChange, handleSortChange };
 }

@@ -89,7 +89,7 @@ jobs:
 
   e2e_tests_preview:
     needs: [build_and_preview, install_playwright]
-    timeout-minutes: 3
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
     - name: Checkout

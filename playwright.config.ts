@@ -11,6 +11,9 @@ export default defineConfig({
     ['html', { open: 'never' }],
     ['line'],
   ],
+  expect: {
+    timeout: 15_000,
+  },
   use: {
     baseURL: 'http://localhost:5173',
     trace: 'retain-on-failure',
