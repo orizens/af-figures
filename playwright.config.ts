@@ -8,8 +8,8 @@ export default defineConfig({
   workers: process.env['CI'] ? 1 : undefined,
   timeout: 30_000,
   reporter: [
+    ['html', { open: 'never' }],
     ['line'],
-    ['html', { open: 'never' }]
   ],
   use: {
     baseURL: 'http://localhost:5173',
