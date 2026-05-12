@@ -20,8 +20,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'bun run dev',
+    command: 'bun run dev --host 0.0.0.0',
     port: 5173,
-    reuseExistingServer: !process.env['CI'],
+    reuseExistingServer: !process.env.CI,
+    timeout: 120 * 1000,
   },
 })
