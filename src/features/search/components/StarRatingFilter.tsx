@@ -12,7 +12,7 @@ export function StarRatingFilter(): React.ReactElement {
           const isChecked = urlRating?.includes(star) ?? false;
           return (
             <label
-              key={star}
+              key={`${star}-star-filter`}
               className={`relative flex items-center gap-1 cursor-pointer rounded-base px-2 py-1 transition-opacity ${isChecked ? "opacity-100 ring-1 ring-primary rounded" : "opacity-60 hover:opacity-100"}`}
             >
               <input
@@ -24,7 +24,7 @@ export function StarRatingFilter(): React.ReactElement {
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer m-0" />
               {Array.from({ length: 5 }, (_, i) => (
                 <StarIcon
-                  key={i}
+                  key={`${star}-star-icon-${i}`}
                   size={16}
                   fill={i < star ? "var(--color-star-filled)" : "var(--color-star-empty)"} />
               ))}

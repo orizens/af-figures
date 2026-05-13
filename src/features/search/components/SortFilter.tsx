@@ -1,4 +1,4 @@
-import { Radio } from "@/features/search/components/Radio";
+import { Radio } from "@/components/Radio";
 import { useSearchFilters } from "@/features/search/hooks/useSearchFilters";
 
 export function SortFilter(): React.ReactElement {
