@@ -21,14 +21,35 @@ export interface UseReviewsResult {
 }
 
 export function useReviews(): UseReviewsResult {
-	const { q, rating, page: urlPage, sort, start, end } = useSearch({ from: "/" });
+	const {
+		q,
+		rating,
+		page: urlPage,
+		sort,
+		start,
+		end,
+	} = useSearch({ from: "/" });
 	const debouncedQ = useDebounce(q, DEBOUNCE_DELAY);
 
 	const queries = useQueries({
 		queries: Array.from({ length: urlPage }, (_, i) => ({
-			queryKey: ["reviews", { q: debouncedQ, rating, page: i + 1, sort, start, end }],
+			queryKey: [
+				"reviews",
+				{ q: debouncedQ, rating, page: i + 1, sort, start, end },
+			],
 			queryFn: ({ signal }: { signal: AbortSignal }) =>
-				getReviews({ q: debouncedQ, rating, page: i + 1, count: PAGE_SIZE, sort, start, end }, signal),
+				getReviews(
+					{
+						q: debouncedQ,
+						rating,
+						page: i + 1,
+						count: PAGE_SIZE,
+						sort,
+						start,
+						end,
+					},
+					signal,
+				),
 			placeholderData: (prev: ReviewsResponse | undefined) => prev,
 		})),
 	});

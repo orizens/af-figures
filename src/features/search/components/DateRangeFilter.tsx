@@ -4,10 +4,15 @@ interface DateInputProps {
 	ariaLabel: string;
 	value: string;
 	onChange: React.ChangeEventHandler<HTMLInputElement>;
-  children: React.ReactNode;
+	children: React.ReactNode;
 }
 
-function DateInput({ ariaLabel, value, onChange ,children }: DateInputProps): React.ReactElement {
+function DateInput({
+	ariaLabel,
+	value,
+	onChange,
+	children,
+}: DateInputProps): React.ReactElement {
 	return (
 		<label className="flex flex-col gap-1 text-sm font-medium text-text">
 			{children}
@@ -23,13 +28,26 @@ function DateInput({ ariaLabel, value, onChange ,children }: DateInputProps): Re
 }
 
 export function DateRangeFilter(): React.ReactElement {
-	const { urlStart, urlEnd, handleStartChange, handleEndChange } = useSearchFilters();
+	const { urlStart, urlEnd, handleStartChange, handleEndChange } =
+		useSearchFilters();
 
 	return (
 		<div className="flex flex-col gap-3">
 			<span className="text-sm font-medium text-text">Date range</span>
-			<DateInput ariaLabel="Start date" value={urlStart ?? ""} onChange={handleStartChange}>From</DateInput>
-			<DateInput ariaLabel="End date" value={urlEnd ?? ""} onChange={handleEndChange}>To</DateInput>
+			<DateInput
+				ariaLabel="Start date"
+				value={urlStart ?? ""}
+				onChange={handleStartChange}
+			>
+				From
+			</DateInput>
+			<DateInput
+				ariaLabel="End date"
+				value={urlEnd ?? ""}
+				onChange={handleEndChange}
+			>
+				To
+			</DateInput>
 		</div>
 	);
 }

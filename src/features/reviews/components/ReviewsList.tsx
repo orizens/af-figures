@@ -44,9 +44,7 @@ function ReviewsListContent(): React.ReactElement {
 			)}
 
 			{isEmpty && (
-				<p className="text-center text-text-muted py-12">
-					No reviews found.
-				</p>
+				<p className="text-center text-text-muted py-12">No reviews found.</p>
 			)}
 
 			{groups.length > 0 && (

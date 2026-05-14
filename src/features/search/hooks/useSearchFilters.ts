@@ -3,17 +3,28 @@ import { useSearch, useNavigate } from "@tanstack/react-router";
 import { useCallback } from "react";
 
 export function useSearchFilters() {
-	const { q: urlQ, rating: urlRating, start: urlStart, end: urlEnd, sort: urlSort } = useSearch({ from: "/" });
+	const {
+		q: urlQ,
+		rating: urlRating,
+		start: urlStart,
+		end: urlEnd,
+		sort: urlSort,
+	} = useSearch({ from: "/" });
 	const navigate = useNavigate({ from: "/" });
 
 	const navigateQ = useCallback(
 		(value: string) => {
-			navigate({ search: (prev) => ({ ...prev, q: value, page: 1 }), replace: false });
+			navigate({
+				search: (prev) => ({ ...prev, q: value, page: 1 }),
+				replace: false,
+			});
 		},
 		[navigate],
 	);
 
-	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+	const handleSearchChange = (
+		event: React.ChangeEvent<HTMLInputElement>,
+	): void => {
 		navigateQ(event.target.value);
 	};
 
@@ -29,7 +40,9 @@ export function useSearchFilters() {
 		});
 	};
 
-	const handleStartChange = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+	const handleStartChange = async (
+		event: React.ChangeEvent<HTMLInputElement>,
+	): Promise<void> => {
 		const value = event.target.value || undefined;
 		await navigate({
 			search: (prev) => ({ ...prev, start: value, page: 1 }),
@@ -37,7 +50,9 @@ export function useSearchFilters() {
 		});
 	};
 
-	const handleEndChange = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+	const handleEndChange = async (
+		event: React.ChangeEvent<HTMLInputElement>,
+	): Promise<void> => {
 		const value = event.target.value || undefined;
 		await navigate({
 			search: (prev) => ({ ...prev, end: value, page: 1 }),
@@ -52,5 +67,17 @@ export function useSearchFilters() {
 		});
 	};
 
-	return { q: urlQ, urlRating, urlStart, urlEnd, urlSort, navigateQ, handleSearchChange, handleStarToggle, handleStartChange, handleEndChange, handleSortChange };
+	return {
+		q: urlQ,
+		urlRating,
+		urlStart,
+		urlEnd,
+		urlSort,
+		navigateQ,
+		handleSearchChange,
+		handleStarToggle,
+		handleStartChange,
+		handleEndChange,
+		handleSortChange,
+	};
 }

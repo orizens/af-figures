@@ -8,8 +8,10 @@ export function stringifySearch(search: Record<string, unknown>): string {
 				return true;
 			})
 			.flatMap(([key, value]) =>
-				Array.isArray(value) ? [[key, value.join(",")]] : [[key, String(value)]]
-			)
+				Array.isArray(value)
+					? [[key, value.join(",")]]
+					: [[key, String(value)]],
+			),
 	);
 
 	const str = params.toString();

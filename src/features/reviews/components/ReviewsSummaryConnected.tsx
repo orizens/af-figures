@@ -5,5 +5,13 @@ import { useSearch } from "@tanstack/react-router";
 export function ReviewsSummaryConnected(): React.ReactElement {
 	const { totalReviews, pagesLoaded, isFetching } = useReviews();
 	const { q, rating } = useSearch({ from: "/" });
-	return <ReviewsSummary totalReviews={totalReviews} pagesLoaded={pagesLoaded} isFetching={isFetching} q={q} rating={rating} />;
+	return (
+		<ReviewsSummary
+			totalReviews={totalReviews}
+			pagesLoaded={pagesLoaded}
+			isFetching={isFetching}
+			q={q}
+			rating={rating}
+		/>
+	);
 }

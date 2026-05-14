@@ -13,8 +13,14 @@ const STORE_LABELS: Record<string, string> = {
 };
 
 const AVATAR_CLASSES = [
-	"bg-indigo-500", "bg-violet-500", "bg-pink-500", "bg-rose-500",
-	"bg-sky-500", "bg-teal-500", "bg-emerald-500", "bg-amber-500",
+	"bg-indigo-500",
+	"bg-violet-500",
+	"bg-pink-500",
+	"bg-rose-500",
+	"bg-sky-500",
+	"bg-teal-500",
+	"bg-emerald-500",
+	"bg-amber-500",
 ];
 
 function parseStars(stars: string): number {
@@ -56,11 +62,17 @@ function StarRating({ stars, id }: StarRatingProps): React.ReactElement {
 	const rounded = Math.round(value);
 
 	return (
-		<span role="img" aria-label={`${rounded} out of 5 stars`} className="flex gap-0.5">
+		<span
+			role="img"
+			aria-label={`${rounded} out of 5 stars`}
+			className="flex gap-0.5"
+		>
 			{Array.from({ length: 5 }, (_, i) => (
 				<StarIcon
 					key={`star-${id}-${i}`}
-					fill={i < rounded ? "var(--color-star-filled)" : "var(--color-star-empty)"}
+					fill={
+						i < rounded ? "var(--color-star-filled)" : "var(--color-star-empty)"
+					}
 				/>
 			))}
 		</span>
@@ -105,9 +117,7 @@ interface TitleProps {
 
 function Title({ title }: TitleProps): React.ReactElement {
 	return (
-		<h3 className="font-semibold text-text text-sm leading-snug">
-			{title}
-		</h3>
+		<h3 className="font-semibold text-text text-sm leading-snug">{title}</h3>
 	);
 }
 
@@ -150,7 +160,11 @@ interface FooterProps {
 	hasResponse: boolean;
 }
 
-function Footer({ store, version, hasResponse }: FooterProps): React.ReactElement {
+function Footer({
+	store,
+	version,
+	hasResponse,
+}: FooterProps): React.ReactElement {
 	const storeLabel = STORE_LABELS[store] ?? store;
 
 	return (
@@ -158,14 +172,18 @@ function Footer({ store, version, hasResponse }: FooterProps): React.ReactElemen
 			<span className="text-xs text-text-muted font-medium px-2 py-0.5 rounded-full bg-border">
 				{storeLabel}
 			</span>
-			{version && (
-				<span className="text-xs text-text-muted">
-					v{version}
-				</span>
-			)}
+			{version && <span className="text-xs text-text-muted">v{version}</span>}
 			{hasResponse && (
 				<span className="ml-auto text-xs text-rating-high font-medium flex items-center gap-1">
-					<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+					<svg
+						width="12"
+						height="12"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="2.5"
+						aria-hidden="true"
+					>
 						<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
 					</svg>
 					Responded

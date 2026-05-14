@@ -20,7 +20,7 @@ export function LoadMore({
 			replace: false,
 			resetScroll: false,
 		});
-	}
+	};
 
 	return (
 		<div className="flex justify-center py-6">

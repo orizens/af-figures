@@ -12,7 +12,7 @@ export function ErrorFallback({
 	const handleRetry = (): void => {
 		void queryClient.resetQueries();
 		reset();
-	}
+	};
 
 	return (
 		<div
